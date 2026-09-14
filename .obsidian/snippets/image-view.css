@@ -1,0 +1,4 @@
+.image-container img {
+  max-height: calc(100dvh - 126px);
+  object-fit: contain;
+}

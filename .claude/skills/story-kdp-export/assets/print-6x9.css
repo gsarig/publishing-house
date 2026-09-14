@@ -1,0 +1,140 @@
+/* print-6x9.css - KDP paperback interior: 6 x 9 in trim, B&W, no bleed.
+   Print companion of kindle-classic.css: same visual language as the ebook
+   (uppercase centered chapter titles, bold two-line drop cap, indented
+   paragraphs with no vertical gaps, centered * * * scene breaks), adapted
+   to paged media for WeasyPrint.
+
+   The mirrored inside (gutter) margins are NOT set here: build-print-pdf.sh
+   appends them at render time, sized to the final page count per KDP's
+   no-bleed gutter table. Page structure produced by the build:
+   title page -> copyright page -> Contents -> chapters -> back matter.
+   Chapters and back matter use the named page "main", which carries the
+   page number and the running heads; front matter pages carry nothing. */
+
+/* ---- Page geometry and margin boxes ---- */
+
+@page {
+  size: 6in 9in;
+  margin: 0.75in 0.5in; /* inside margin overridden per page side at build time */
+  font-family: "EB Garamond", "Liberation Serif", serif;
+}
+
+/* Body pages: page number bottom center; running heads top center
+   (author on verso, title on recto), Kindle-Classic-adjacent styling. */
+@page main {
+  @bottom-center { content: counter(page); font-size: 9.5pt; }
+}
+@page main:left {
+  @top-center { content: string(book-author); font-size: 8.5pt; letter-spacing: 0.14em; text-transform: uppercase; }
+}
+@page main:right {
+  @top-center { content: string(book-title); font-size: 8.5pt; letter-spacing: 0.14em; text-transform: uppercase; }
+}
+/* Running heads are additionally suppressed on every chapter-opening page
+   (the page number stays): WeasyPrint does not implement page groups, so
+   build-print-pdf.sh appends @page :nth(N) overrides for the opener pages
+   it finds in the rendered document's anchors. */
+
+/* ---- Base typography ---- */
+
+html { font-family: "EB Garamond", "Liberation Serif", serif; }
+body {
+  margin: 0;
+  font-size: 11.5pt;
+  line-height: 1.45;
+  text-align: justify;
+  hyphens: auto;
+  color: #000;
+}
+
+/* Chapter prose: first-line indent, no vertical gaps; first paragraph after
+   a heading or scene break sits flush. */
+p { margin: 0; text-indent: 1.5em; orphans: 2; widows: 2; }
+h1 + p, h2 + p, p.scene-break + p, p.gap + p { text-indent: 0; }
+
+/* Print renders links as plain text. */
+a { color: inherit; text-decoration: none; }
+
+/* Scene breaks (from *** lines in the source). */
+p.scene-break { text-indent: 0; text-align: center; letter-spacing: 0.35em; margin: 1.2em 0; }
+
+/* Beat breaks (from blank lines in --paragraphs prose): a plain one-line gap. */
+p.gap { text-indent: 0; margin: 0; }
+
+blockquote { margin: 1em 1.5em; font-style: italic; }
+blockquote p { text-indent: 0; }
+hr { border: none; margin: 1.2em 0; }
+
+/* ---- Title page (pandoc title block) ---- */
+
+header#title-block-header { page-break-after: always; text-align: center; margin-top: 1.9in; }
+h1.title {
+  string-set: book-title content();
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 19pt;
+  line-height: 1.5;
+  margin: 0 0.3in;
+}
+p.subtitle { font-style: italic; font-size: 12.5pt; text-indent: 0; margin: 0.5em 0 0 0; }
+p.author { string-set: book-author content(); font-size: 12pt; text-indent: 0; margin: 2.2em 0 0 0; }
+p.date { display: none; }
+
+/* ---- Copyright page (injected by build-print-pdf.sh) ---- */
+
+div.copyright-page { page-break-after: always; text-align: center; font-size: 9pt; line-height: 1.8; margin-top: 4.6in; }
+div.copyright-page p { text-indent: 0; margin: 0 0 0.9em 0; }
+
+/* ---- Contents (pandoc nav) ---- */
+
+nav#TOC { page-break-after: always; }
+nav#TOC h2 { text-align: center; text-transform: uppercase; font-weight: bold; font-size: 15pt; letter-spacing: 0.05em; margin: 1.1in 0 0.55in 0; }
+nav#TOC ul { list-style: none; margin: 0 0.2in; padding: 0; }
+nav#TOC li { margin: 0.55em 0; text-indent: 0; text-align: left; }
+/* build-print-pdf.sh converts TOC anchors to <span data-dest="#..."> so the
+   PDF carries no link annotations (KDP flags them as non-printable markup);
+   the page number is still resolved from the kept target reference. */
+nav#TOC a::after { content: target-counter(attr(href), page); float: right; }
+nav#TOC span[data-dest]::after { content: target-counter(attr(data-dest), page); float: right; }
+
+/* ---- Chapters and back matter ---- */
+
+/* Page numbering is physical (title page = 1); front-matter pages simply
+   carry no number. Do not reset the page counter on a section: WeasyPrint
+   applies the reset per element, which corrupts the Contents page's
+   target-counter() numbers. */
+section.level1 { page: main; page-break-before: always; }
+
+section.level1 h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 15pt;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  margin: 1.1in 0 0.55in 0;
+}
+
+/* Drop cap on each chapter's opening paragraph, as in the ebook.
+   A floated ::first-letter crashes WeasyPrint 68's layout engine, so
+   build-print-pdf.sh wraps the opening letter (plus any leading quote)
+   in this span instead; back-matter sections are skipped. */
+span.dropcap {
+  float: left;
+  font-size: 3.1em;
+  line-height: 0.88;
+  margin: 0.015em 0.1em 0 0;
+  padding: 0;
+  font-weight: bold;
+}
+/* These values are pixel-calibrated for EB Garamond at 11.5pt/1.45: apex on
+   the first line's cap-height line, foot on the second line's baseline, and
+   a float box of exactly two line boxes (the third line returns flush left).
+   Retune all three together if the body size, leading, or font changes. */
+
+/* Back matter: block paragraphs flush left, book titles as plain bold
+   headings (their store links render as plain text in print). */
+section.backmatter p { text-indent: 0; margin: 0 0 0.65em 0; }
+section.backmatter h2 { text-align: left; font-weight: bold; font-size: 12.5pt; line-height: 1.3; margin: 1.6em 0 0.7em 0; }
+section.backmatter h2 a { text-decoration: none; }

@@ -1,0 +1,17 @@
+# Obsidian session state (regenerated per machine)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+.obsidian/vault-stats.json
+
+# Obsidian plugin code: readers install the plugins from Obsidian; only their settings are tracked
+.obsidian/plugins/*/*
+!.obsidian/plugins/*/data.json
+
+# Claude Code local state
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS noise
+.DS_Store
+Thumbs.db
