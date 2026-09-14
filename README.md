@@ -121,7 +121,7 @@ flowchart TD
 2. **Open it in Obsidian** as a vault, enable community plugins when prompted, and install the plugins listed under [Obsidian plugins](#obsidian-plugins) from Settings → Community plugins. Their settings are already in the vault.
 3. **Install [Claude Code](https://claude.com/claude-code)** and run `claude` in the vault folder.
 4. **Run `/writing-style` once.** It interviews you (and reads your best prose, if you have some) and writes your style reference. Every editorial pass depends on it; until it runs, they will refuse politely.
-5. **Write.** Add ideas to `_Ideas.md`; when one is ready, run `/new-story` and start drafting chapter by chapter. Use `/update-chapter ch-01` after each chapter and the editorial pipeline when the draft is done.
+5. **Write.** Add ideas to `_Ideas.md`; when one is ready, run `/new-story` and start drafting chapter by chapter. After each chapter, run `/update-chapter ch-01` to sync the story notes (Timeline, Characters, Locations), and run the editorial pipeline when the draft is done.
 6. **Before your first export**, fill in `_Author.md` (bio + published books); its two sections become the back matter of every book you build.
 
 ## Obsidian plugins
