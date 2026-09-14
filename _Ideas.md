@@ -3,7 +3,7 @@ tags:
   - ideas
 ---
 
-This is your idea notebook. Jot down story ideas here as they come, one `## Heading` per idea, separated by `---` rules. Length and polish don't matter; a two-line premise is enough.
+This is your idea notebook. Write down story ideas here as they come, one `## Heading` per idea, separated by `---` rules. Length and polish don't matter; a two-line premise is enough.
 
 When an idea feels ready, run `/new-story` and point it at the heading: it builds the full story scaffold (bible, timeline, folders) from what you wrote here.
 

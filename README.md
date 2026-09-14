@@ -10,7 +10,7 @@ One principle runs through the whole system: **the AI never touches your prose.*
 
 ## What's inside
 
-- **A complete editorial pipeline**, modeled on professional fiction publishing, big-to-small: quick clean → beta read (simulated reader personas, run cold and isolated so they can't see your notes) → bible reconcile → developmental edit → line edit → copy edit → proofread. The heavier passes harden their own output with an internal critic sub-agent before you see it.
+- **A complete editorial pipeline**, modeled on professional fiction publishing, big-to-small: quick clean → beta read (simulated reader personas, run cold and isolated so they can't see your notes) → bible reconcile → developmental edit → line edit → copy edit → listen (hear each chapter read aloud) → proofread. The heavier passes harden their own output with an internal critic sub-agent before you see it.
 - **Story management**: idea capture (`_Ideas.md`), story scaffolding (`/new-story`), per-chapter state sync of timeline/characters/locations (`/update-chapter`), continuity audits, a dashboard of all stories, and archiving.
 - **Production**: KDP-ready EPUB and 6x9 paperback interior PDF with title page, TOC, and your standard back matter (`/story-kdp-export`), manuscript PDFs for beta rounds (`/pdf-convert`), an e-ink readability check for your cover (`/story-cover-check`), and a print-cover pre-flight checklist (`_KDP cover pre-flight.md`).
 - **A style contract**: the `writing-style` skill holds your aesthetic (built by interviewing you and reading your prose), and every editorial pass judges against it, so the machine polishes toward *your* register instead of generic taste.
@@ -121,7 +121,7 @@ flowchart TD
 2. **Open it in Obsidian** as a vault, enable community plugins when prompted, and install the plugins listed under [Obsidian plugins](#obsidian-plugins) from Settings → Community plugins. Their settings are already in the vault.
 3. **Install [Claude Code](https://claude.com/claude-code)** and run `claude` in the vault folder.
 4. **Run `/writing-style` once.** It interviews you (and reads your best prose, if you have some) and writes your style reference. Every editorial pass depends on it; until it runs, they will refuse politely.
-5. **Write.** Jot ideas into `_Ideas.md`; when one is ready, run `/new-story` and start drafting chapter by chapter. Use `/update-chapter ch-01` after each chapter and the editorial pipeline when the draft is done.
+5. **Write.** Add ideas to `_Ideas.md`; when one is ready, run `/new-story` and start drafting chapter by chapter. Use `/update-chapter ch-01` after each chapter and the editorial pipeline when the draft is done.
 6. **Before your first export**, fill in `_Author.md` (bio + published books); its two sections become the back matter of every book you build.
 
 ## Obsidian plugins
@@ -174,11 +174,11 @@ The editorial pipeline needs nothing beyond Obsidian and Claude Code. The export
 └── .claude/                   # the skills and commands (the staff of the house)
 ```
 
-Each story lives in its own folder with its bible (`_Index.md`), a spoiler-free `CLAUDE.md` stub, `Chapters/`, `_Characters/`, `_Locations/`, and, as the pipeline runs, `_personas/` and `_reviews/`.
+Each story lives in its own folder with its bible (`_Index.md`), a spoiler-free `CLAUDE.md` stub, `Chapters/`, `_Characters/`, `_Locations/`, and, as the pipeline runs, `_personas/`, `_reviews/` and `_listens/`.
 
 ## License
 
-[MIT](LICENSE). The stories you write in it are, of course, entirely yours.
+[MIT](LICENSE). The stories you write in it are, of course, entirely yours. The book covers and screenshot in `.github/readme/` and the book blurbs in `_Ideas.md` are not covered by the license.
 
 ## About me
 
