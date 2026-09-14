@@ -6,6 +6,8 @@ Before AI, an author with means would hand the work around the writing to other 
 
 One principle runs through the whole system: **the AI never touches your prose.** Every editorial pass produces a review document with suggestions; you apply changes by hand, or reject them. The only files the machine writes are reviews, tracking notes, and the final production builds.
 
+![A chapter open in Obsidian next to its story index, with per-chapter status, editing pass, word and page counts](.github/readme/demo.jpg)
+
 ## What's inside
 
 - **A complete editorial pipeline**, modeled on professional fiction publishing, big-to-small: quick clean → beta read (simulated reader personas, run cold and isolated so they can't see your notes) → bible reconcile → developmental edit → line edit → copy edit → proofread. The heavier passes harden their own output with an internal critic sub-agent before you see it.
