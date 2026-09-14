@@ -10,7 +10,7 @@ views:
     order:
       - file.name
       - genre
-      - length
+      - form
       - status
       - started
       - target_wordcount
@@ -22,7 +22,7 @@ views:
     order:
       - file.name
       - genre
-      - length
+      - form
       - started
   - type: table
     name: Completed
@@ -32,7 +32,7 @@ views:
     order:
       - file.name
       - genre
-      - length
+      - form
       - started
   - type: table
     name: Abandoned
@@ -42,5 +42,5 @@ views:
     order:
       - file.name
       - genre
-      - length
+      - form
       - started
