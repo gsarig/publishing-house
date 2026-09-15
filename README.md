@@ -19,73 +19,65 @@ The full stage table and rules live in [`CLAUDE.md`](CLAUDE.md); a reader-friend
 
 ## Workflow
 
-Dotted arrows are optional or conditional steps. `/story-audit` and `/story-manual-revise` can run at any point, so they aren't drawn.
+Dotted arrows are optional or conditional steps. `/story-audit` can run at any point, and `/pdf-convert` builds an optional manuscript PDF for a beta-read round, so neither is drawn. `/archive-story` also takes abandoned stories.
 
 ```mermaid
-%%{init: {"themeVariables": {"fontSize": "20px"}}}%%
 flowchart TD
     subgraph LEGEND["Legend"]
         direction LR
-        keymanual(["Done by hand"]) ~~~ keycommand["Command"]
+        keymanual["Done by hand"] ~~~ keycommand["Command"]
     end
-
-    subgraph SETUP["Setup, once"]
-        direction LR
-        writingstyle["/writing-style"]
-        authorfile(["Fill in _Author.md"])
+    LEGEND ~~~ NS
+    WS["Write your style contract, once<br/>/writing-style"] --> NS["Scaffold the story<br/>/new-story"]
+    I["Add ideas to _Ideas.md"] -.-> NS
+    NS --> W["Write a chapter"]
+    W --> UC["Sync Timeline, Characters, Locations<br/>/update-chapter ch-XX"]
+    UC -->|next chapter| W
+    DE["Informal chapter check<br/>/dev-edit ch-XX"] -.-> W
+    CS["Re-entry brief after time away<br/>/continue-story"] -.-> W
+    UC -->|draft complete| S1["Self-revision"]
+    S1 --> S2
+    subgraph HOUSE["The AI staff · never touches the prose"]
+        S2["Quick clean<br/>/story-quick-clean"] --> S3["Beta read (reader personas)<br/>/story-personas · /story-beta-read"]
+        S3 -.->|another round| S3
+        S3 --> S4["Bible reconcile (interview, updates _Index.md)<br/>/story-update-bible"]
+        S4 --> S5["Developmental edit (whole manuscript)<br/>/story-dev-edit"]
+        S5 --> S6["Line edit (per chapter)<br/>/story-line-edit"]
+        S6 --> S7["Copy edit (per chapter)<br/>/story-copy-edit"]
+        S9["Proofread (per chapter)<br/>/story-proof"]
     end
-
-    subgraph DRAFT["Drafting"]
-        ideas(["Add ideas to _Ideas.md"]) --> newstory["/new-story"]
-        newstory --> write(["Write a chapter"])
-        write --> updatechapter["/update-chapter ch-XX<br>to sync story notes (Timeline, Characters, Locations)"]
-        updatechapter -->|next chapter| write
-        chapterdev["/dev-edit ch-XX<br>informal check"] -.-> write
-        continuestory["/continue-story<br>after time away"] -.-> write
+    S7 --> L["Generate the chapter's audio (per chapter)<br/>/story-listen"]
+    L --> S8["Listen and fix the flow,<br/>by hand"]
+    S8 --> S9
+    HOUSE -.-> R["Review note<br/>with suggestions"]
+    R --> D{"Do you agree?"}
+    D -- yes --> A["Apply it to the prose,<br/>by hand"]
+    D -- no --> X["Reject it"]
+    A -.->|on to the next pass| HOUSE
+    X -.->|on to the next pass| HOUSE
+    subgraph PROD["Production"]
+        P1["Export the EPUB<br/>/story-kdp-export"]
+        P2["Build the print-ready paperback PDF<br/>/story-kdp-export"]
+        P3["Check the cover on e-ink<br/>/story-cover-check"]
+        P4["Promo files and publication record<br/>/publish-prep"]
     end
+    S9 --> S10["Final read-throughs<br/>(as many as it takes)"]
+    S10 -.->|your wording fixes| V["Validate each fix<br/>/story-manual-revise"]
+    V -.->|validated, applied by hand| S10
+    S10 --> P1
+    S10 --> P2
+    S10 --> P3
+    S10 --> P4
+    AU["Fill in _Author.md, once"] -.->|back matter| P1
+    AU -.-> P2
+    P1 --> KDP["Upload to KDP"]
+    P2 --> KDP
+    P3 --> KDP
+    P4 --> KDP
+    KDP --> AR["Archive the story<br/>/archive-story"]
 
-    subgraph WHOLE["Editing the whole manuscript"]
-        selfrevision(["Self-revision"]) --> quickclean["/story-quick-clean"]
-        quickclean --> fixclean(["Fix what it flags"])
-        fixclean --> betaread["/story-beta-read"]
-        personas["/story-personas<br>before round 1"] -.-> betaread
-        pdfconvert["/pdf-convert<br>manuscript PDF"] -.-> betaread
-        betaread --> revisebeta(["Decide what to change, revise"])
-        revisebeta -->|another round| betaread
-        revisebeta --> updatebible["/story-update-bible"]
-        updatebible --> storydev["/story-dev-edit"]
-        storydev --> revisedev(["Revise the draft"])
-    end
-
-    subgraph CHAPTER["Editing each chapter"]
-        lineedit["/story-line-edit"] --> copyedit["/story-copy-edit"]
-        copyedit --> listen["/story-listen"]
-        listen --> fixlisten(["Fix what you hear"])
-        fixlisten --> proof["/story-proof"]
-        lineedit --> applyfixes(["Apply accepted fixes"])
-        copyedit --> applyfixes
-        proof --> applyfixes
-    end
-
-    subgraph PUBLISH["Publishing"]
-        direction LR
-        kdpexport["/story-kdp-export"] --> upload(["Upload to KDP"])
-        covercheck["/story-cover-check"] --> upload
-        publishprep["/publish-prep"] --> upload
-    end
-
-    archivestory["/archive-story"]
-
-    LEGEND ~~~ DRAFT
-    SETUP --> DRAFT
-    DRAFT -->|draft complete| WHOLE
-    WHOLE --> CHAPTER
-    CHAPTER --> PUBLISH
-    PUBLISH --> archivestory
-    DRAFT -.->|abandoned| archivestory
-
-    classDef manual fill:#d3f5dd,stroke:#2da44e,stroke-width:2px,color:#0f3d1e
-    class keymanual,authorfile,ideas,write,selfrevision,fixclean,revisebeta,revisedev,applyfixes,fixlisten,upload manual
+    classDef writer fill:#a5d6a7,stroke:#2e7d32,color:#1a1a1a
+    class keymanual,AU,I,W,S1,S8,S10,D,A,X,KDP writer
     style LEGEND fill:none,stroke:#8b949e,stroke-dasharray:5 5
 ```
 
