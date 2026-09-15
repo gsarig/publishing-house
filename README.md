@@ -2,7 +2,7 @@
 
 **A publishing house in a vault.**
 
-I write as a hobby, on my weekends and days off, and I don't want to spend what little time I have on peripheral tasks instead of the writing itself. So I asked myself: if I had an unlimited budget to hire a team around me, what specialties would I need? Developmental editors, line editors, copy editors, proofreaders, beta readers, a production department for the print and ebook files. This repo is my attempt to emulate that team, packaged as an [Obsidian](https://obsidian.md) vault wired for [Claude Code](https://claude.com/claude-code). You write the fiction; the house does everything else, from the first idea note to the files you upload to Amazon KDP.
+I write as a hobby, on my weekends and days off, and I don't want to spend what little time I have on peripheral tasks instead of the writing itself. So I asked myself: if I had an unlimited budget to hire a team around me, what specialties would I need? Developmental editors, line editors, copy editors, proofreaders, beta readers, a production department for the print and ebook files. This repo is my attempt to emulate that team, packaged as an [Obsidian](https://obsidian.md) vault wired for [Claude Code](https://claude.com/claude-code). The idea is simple: you write the fiction; the house does everything else, from your first note to the files you upload to Amazon KDP.
 
 One principle runs through the whole system: **the AI never touches your prose.** Every editorial pass produces a review document with suggestions; you apply changes by hand, or reject them. The only files the machine writes are reviews, tracking notes, and the final production builds.
 
