@@ -42,14 +42,14 @@ The gap is |text gray − background gray|. Verdict: **≤ 35** (two quantize st
 
 Two levers, in order of effect:
 
-**Recolor the text.** Gray value ≈ 0.299R + 0.587G + 0.114B, so pure red caps at ~83/255; "a brighter red" cannot fix it. Add green: shift red toward coral/orange (#FF4433 → gap ~68, #FF6B4A → ~85, #FF8C66 → ~102 on a #252525 background). Recolor without flattening antialiasing via a redness mask (adapt the r−g mask for other hues):
+**Recolor the text.** Gray value ≈ 0.299R + 0.587G + 0.114B, so pure red caps at ~76/255 (85 once simulated); "a brighter red" cannot fix it. Add green: shift red toward coral/orange (#FF4433 → gap ~68, #FF6B4A → ~85, #FF8C66 → ~102 on a #252525 background). Recolor without flattening antialiasing via a redness mask (adapt the r−g mask for other hues):
 
 ```bash
 A='clip((r(X,Y)-g(X,Y))*2,0,255)/255'; V='(r(X,Y)/255)'
 ffmpeg -v error -y -i <cover> -vf "format=rgb24,scale=-2:1000,geq=r='r(X,Y)*(1-${A})+TR*${A}*${V}':g='g(X,Y)*(1-${A})+TG*${A}*${V}':b='b(X,Y)*(1-${A})+TB*${A}*${V}'" -frames:v 1 variant-color.png
 ```
 
-**Darken the background.** `convert <cover> -gamma 0.625 darkbg-color.png` approximates it (darkens shadows, keeps white and saturated text). Alone it raises a red-on-#252525 gap only to ~51 (ceiling ~68 even on pure black), so treat it as a way to keep a redder red: a modest lift like #FF4433 on a ~#0D0D0D background clears ~85.
+**Darken the background.** `convert <cover> -gamma 0.625 darkbg-color.png` approximates it (darkens shadows, keeps white and saturated text). Alone it raises a red-on-#252525 gap only to ~51 (ceiling ~68 even on pure black), so treat it as a way to keep a redder red: a modest lift like #FF4433 on a ~#0D0D0D background reaches ~85 (borderline).
 
 Name every variant file by its measured background and font hex (lowercase, no `#`): `bg-<bghex>_font-<fonthex>-color.png` and `-eink.png`; prefix the baseline `original_`. Measure the hexes from the variant file itself (step 3 sampler), never assume them, e.g. a gamma-darkened background must be re-sampled for its actual value.
 

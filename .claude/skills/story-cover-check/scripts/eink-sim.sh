@@ -12,7 +12,7 @@
 #
 # Reading the result: text whose gray value sits within ~2 quantize steps (~35/255)
 # of its background will be unreadable on the device. Aim for a gap of 90+.
-# Pure red is deceptively dark in grayscale (~83/255); lift it toward coral/orange
+# Pure red is deceptively dark in grayscale (~76/255); lift it toward coral/orange
 # (adding green raises luminance fastest) rather than picking a "brighter red".
 
 set -euo pipefail
