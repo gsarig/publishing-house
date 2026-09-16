@@ -106,7 +106,7 @@ Skill outputs live in `_personas/` and `_reviews/` at the story root. Whole-work
 | `/story-proof ch-XX` | Proofread: typos and formatting on a chapter (stage 6) |
 | `/story-audit` | Full consistency audit across all chapters |
 | `/story-manual-revise` | Validate a single author-decided wording change (grammar, idiom, repetition, continuity) before applying it by hand |
-| `/pdf-convert` | Render chapters into a styled manuscript PDF for beta-read rounds (general Markdown-to-PDF skill) |
+| `/pdf-convert` | Render chapters into a styled manuscript PDF, for reading a draft as a book (general Markdown-to-PDF skill) |
 | `/story-kdp-export` | Build the KDP-ready files of a story (title page, TOC, standard back matter): the ebook EPUB and/or the 6x9 paperback interior PDF. The EPUB and print PDF are uploaded to KDP directly; no KPF is produced |
 | `/story-cover-check` | Simulate a cover on a grayscale e-ink reader and measure text readability before uploading to KDP |
 | `/publish-prep` | Create promo files and publication record when ready to publish |
